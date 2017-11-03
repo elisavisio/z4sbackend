@@ -11,21 +11,20 @@ const url = "mqtt://liveobjects.orange-business.com:1883"
 const apiKey = "0d1bde96f14e4e7b926a10ff5f3b3b7a"
 
 /** connect **/
-console.log("MQTT::Connecting to ");
+//console.log("MQTT::Connecting to ");
 var client  = mqtt.connect(url, {username:"json+device", password:apiKey,clientId:"urn:lo:nsid:hubbub:002", keepAlive:30})
 
 /** client on connect **/
 client.on("connect", function() {
-  console.log("MQTT::Connected");
+  //console.log("MQTT::Connected");
 
   var test = JSON.stringify(mymessageok);
-  console.log(test);
   client.publish("dev/data",test);
 })
 
 /** client on error **/
 client.on("error", function(err) {
-  console.log("MQTT::Error from client --> ", err);
+ // console.log("MQTT::Error from client --> ", err);
 })
 
 

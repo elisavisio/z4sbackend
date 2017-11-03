@@ -1,0 +1,46 @@
+<html>
+<head>
+</head>
+<body>
+<script>
+
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  )
+}
+
+
+	var uuid = uuidv4();
+	//var client = new WebSocket('ws://mqtt-client-muup7483.kermit.itn.intraorange/', 'echo-protocol');
+	var client = new WebSocket('wss://sdiam.kmt.orange.com/', 'echo-protocol');
+
+	client.onerror = function() {
+		console.log('Connection Error');
+	};
+
+	client.onopen = function() {
+		console.log('WebSocket Client Connected');
+
+		function sendNumber() {
+			if (client.readyState === client.OPEN) {
+				var number = Math.round(Math.random() * 0xFFFFFF);
+				client.send(uuid+' '+number.toString());
+				setTimeout(sendNumber, 1000);
+			}
+		}
+		//sendNumber();
+	};
+
+	client.onclose = function() {
+		console.log('echo-protocol Client Closed');
+	};
+
+	client.onmessage = function(e) {
+		if (typeof e.data === 'string') {
+			console.log("Received: '" + e.data + "'");
+		}
+	};
+</script>
+</body>
+</html>
