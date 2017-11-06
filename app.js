@@ -81,12 +81,7 @@ var server = http.createServer(function (request, response) {
     }
     if (uri == "/beacons") {
         
-        var messageStatus = liveobjects.getBeacons();
-        var headers = {};
-        headers["Content-Type"] = "application/json";
-        response.writeHead(200, headers);
-        response.write(JSON.stringify(messageStatus));
-        response.end();
+       liveobjects.getBeacons(sendHttpResponse,response);
         return;
     }
     if (uri == "/affluence") {

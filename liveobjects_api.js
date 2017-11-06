@@ -33,7 +33,23 @@ var getBeacons = function (callback, responseHandler) {
         }
     }
     var beaconsLastData = function (error,response,body){
-        
+        if (!error && response.statusCode == 200) {
+            
+             var result = []
+             var Major,Minor;
+             body.aggregations.uniq_lest.buckets.forEach(function(element){
+                 Major = element.key
+                 element.uniq_test.buckets.forEach(function(beacon){
+                     Minor = beacon.key
+              // console.log(element.last_value.hits.hits[0]._source);
+                     result.unshift(beacon.last_value.hits.hits[0]._source)
+                     result[0].metadata.source += ':' + Major + ':' + Minor
+                     delete result[0]['@Beacon']
+                     
+                 },this)
+             },this)
+             callback(responseHandler,result);
+           }
     }
 
       var options = {
@@ -95,7 +111,7 @@ var devicesLastdata = function(devices,callback,responseHandler){
             // console.log(element.last_value.hits.hits[0]._source);
             result.push(element.last_value.hits.hits[0]._source);
            },this);
-           console.log(JSON.stringify(result));
+           //console.log(JSON.stringify(result));
            callback(responseHandler,result);
 
          }
