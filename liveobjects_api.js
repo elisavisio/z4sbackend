@@ -1,10 +1,55 @@
 var request = require('request');
 
-var getBeacons = function () {
-    return {};
+var getBeacons = function (callback, responseHandler) {
+    var requestData ={
+        "size": "0",
+        "aggs": {
+            "uniq_lest": {
+                "terms": {
+                    "field": "@Beacon.value.Major"
+                },
+                "aggs": {
+                    "uniq_test": {
+                        "terms": {
+                            "field": "@Beacon.value.Minor"
+                        },
+                "aggs": {
+                    "last_value": {
+                        "top_hits": {
+                            "size": 1,
+                            "sort": [
+                                {
+                                    "timestamp": {
+                                        "order": "desc"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+                    }
+                }
+            }
+        }
+    }
+    var beaconsLastData = function (error,response,body){
+        
+    }
+
+      var options = {
+        //url: 'https://liveobjects.orange-business.com/api/v0/assets?size=20&connected=true',
+        url: 'https://liveobjects.orange-business.com/api/v0/data/search',
+        headers: {
+          'User-Agent': 'request',
+          'X-API-KEY': '0d1bde96f14e4e7b926a10ff5f3b3b7a'
+        },
+        method: "POST",
+        json: requestData
+      }
+      request(options, beaconsLastData)
 }
 
-var devicesLastdatafunction = function(devices,callback,responseHandler){
+var devicesLastdata = function(devices,callback,responseHandler){
     var requestData = {
       "size": 0,
       "aggs": {
@@ -81,7 +126,7 @@ var getSensors = function (callback, responseHandler) {
                 }
                
             }, this);
-            devicesLastdatafunction(devices,callback,responseHandler);
+            devicesLastdata(devices,callback,responseHandler);
         }
     }
 
