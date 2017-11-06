@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Orange
  *
  */
-var devices = require("./devices.js")
+var liveobjects = require("./liveobjects_api.js")
 
 /** MQTT client */
 var request = require('request')
@@ -63,22 +63,25 @@ var http = require("http"),
     fs = require("fs"),
     port = 8080;
 
+var sendHttpResponse= function(response,data){
+    var headers = {};
+    headers["Content-Type"] = "application/json";
+    response.writeHead(200, headers);
+    response.write(JSON.stringify(data));
+    response.end();
+}    
 var server = http.createServer(function (request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
     var uri = url.parse(request.url).pathname
         , filename = path.join(process.cwd() + '/www/', uri);
 
     if (uri == "/sensors") {
-        var messageStatus = { "sensors": "1" };
-        var headers = {};
-        headers["Content-Type"] = "application/json";
-        response.writeHead(200, headers);
-        response.write(JSON.stringify(messageStatus));
-        response.end();
+        liveobjects.getSensors(sendHttpResponse,response);
         return;
     }
     if (uri == "/beacons") {
-        var messageStatus = { "beacons": "1" };
+        
+        var messageStatus = liveobjects.getBeacons();
         var headers = {};
         headers["Content-Type"] = "application/json";
         response.writeHead(200, headers);
