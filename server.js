@@ -235,7 +235,7 @@ wsServer = new WebSocketServer({
     // facilities built into the protocol and the browser.  You should
     // *always* verify the connection's origin and decide whether or not
     // to accept it.
-    autoAcceptConnections: false
+    autoAcceptConnections: true
 });
 
 function originIsAllowed(origin) {
@@ -246,6 +246,7 @@ function originIsAllowed(origin) {
 var clients = [];
 
 wsServer.on('request', function(request) {
+    console.log('request ***');
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
       request.reject();
