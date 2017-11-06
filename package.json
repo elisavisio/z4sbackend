@@ -1,20 +1,12 @@
 {
-  "name": "lo-mqtt-client",
+  "name": "z4sbackend",
   "version": "1.0.0",
-  "description": "Live Objects MQTT client",
-  "main": "mqtt-client.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Orange-OpenSource/LiveObjects-samples-nodejs.git"
-  },
+  "description": "",
+  "main": "app.js",
   "keywords": [
-    "mqtt",
-    "lora",
-    "mqtt test",
-    "mqtt client server",
-    "mqtt example"
+    "mqtt"
   ],
-  "author": "Orange-OpenSource",
+  "author": "Orange",
   "license": "BSD-3",
   "homepage": "https://github.com/Orange-OpenSource/LiveObjects-samples-nodejs#readme",
   "dependencies": {
