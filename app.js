@@ -44,18 +44,23 @@ client.on("offline", function (err) {
 
 client.on("message", function (topic, message) {
     message = message.toString();
+    var device = [];
     if (topic.includes("/connected")) {
         console.log("device connected");
         clients.forEach(function(client) {
             //connection.sendUTF(message.utf8Data);
-            var result = {"metadata" : {"source": "urn"},"connected":true };
+            device = topic.split('/');
+            device = "urn:lo:nsid:"+device[4]+':'+device[5];
+            var result = {"metadata" : {"source": device},"connected":true };
             client.sendUTF(JSON.stringify(result));
         });
     } else if (topic.includes("/disconnected")) {
         console.log("device disconnected");
+        device = topic.split('/');
+        device = "urn:lo:nsid:"+device[4]+':'+device[5];
         clients.forEach(function(client) {
             //connection.sendUTF(message.utf8Data);
-            var result = {"metadata" : {"source": "urn"},"connected":false };
+            var result = {"metadata" : {"source": device},"connected":false };
             client.sendUTF(JSON.stringify(result));
         });
     } else if (topic.includes("router/~event/v1/data/new")) {
